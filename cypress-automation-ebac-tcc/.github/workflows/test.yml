@@ -1,0 +1,27 @@
+name: Tests automation 🧪
+
+on: [push]
+
+jobs:
+  eslint:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install modules
+        run: npm install
+      - name: Run ESLint
+        run: npm run lint
+
+  cypress-run:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run end-to-end tests
+        uses: cypress-io/github-action@v2
+        env:
+          USER_EMAIL: ${{ secrets.CYPRESS_USER_EMAIL }}
+          USER_PASSWORD: ${{ secrets.CYPRESS_USER_PASSWORD }}
+          ACCESS_TOKEN: ${{ secrets.CYPRESS_ACCESS_TOKEN }}
+        with:
+          command: npm run test
